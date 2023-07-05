@@ -255,7 +255,7 @@ class CausalBertWrapper:
             Q0 = Q_probs[:, 0]
             Q1 = Q_probs[:, 1]
 
-        return np.mean(Q0 - Q1)
+        return np.mean(Q1 - Q0)
 
     def build_dataloader(self, texts, confounds, treatments=None, outcomes=None,
         tokenizer=None, sampler='random'):
@@ -303,11 +303,14 @@ if __name__ == '__main__':
     import pandas as pd
 
     df = pd.read_csv('testdata.csv')
+    presidents = pd.read_csv('DatasetPresidentialSlogans.csv', sep=';', on_bad_lines='skip')
+    print(presidents['Slogan'], presidents['Success'])
     cb = CausalBertWrapper(batch_size=2,
         g_weight=0.1, Q_weight=0.1, mlm_weight=1)
     print(df.T)
     cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
-    print(cb.ATE(df['C'], df.text, platt_scaling=True))
+    print(f"Inference: {cb.inference(presidents['Slogan'], presidents['Success'])} \n")
+    print(f"ATE: {cb.ATE(presidents['Success'], presidents['Slogan'],  platt_scaling=True)} \n")
 
 
 
