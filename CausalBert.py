@@ -302,15 +302,14 @@ class CausalBertWrapper:
 if __name__ == '__main__':
     import pandas as pd
 
-    df = pd.read_csv('testdata.csv')
-    presidents = pd.read_csv('DatasetPresidentialSlogans.csv', sep=';', on_bad_lines='skip')
-    print(presidents['Slogan'], presidents['Success'])
+    df = pd.read_csv('combined.csv')
+    print(f'Successfully loaded {len(df)} tweets')
     cb = CausalBertWrapper(batch_size=2,
         g_weight=0.1, Q_weight=0.1, mlm_weight=1)
     print(df.T)
-    cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
-    print(f"Inference: {cb.inference(presidents['Slogan'], presidents['Success'])} \n")
-    print(f"ATE: {cb.ATE(presidents['Success'], presidents['Slogan'],  platt_scaling=True)} \n")
+    cb.train(df['tweet'], df['confounder'], df['treatment'], df['retweet_count'], epochs=1)
+    print(f"Inference: {cb.inference(df['tweet'], df['confounder'])} \n")
+    print(f"ATE: {cb.ATE(df['tweet'], df['confounder'],  platt_scaling=True)} \n")
 
 
 
