@@ -1,6 +1,8 @@
 # Causal Bert -- in Pytorch!
 Pytorch implementation of ["Adapting Text Embeddings for Causal Inference" by Victor Veitch, Dhanya Sridhar, and David M. Blei](https://arxiv.org/pdf/1905.12741.pdf). 
 
+# Adaption of Causal Bert Pytorch for Tweet Analysis
+This repository takes the Causal BERT Pytorch implementation by rpryzant and adapts it for the use with the [US election tweet database](https://www.kaggle.com/datasets/manchunhui/us-election-2020-tweets), using the #biden or #trump as treatment, the existence of both hashtags in the tweet as confounder, and whether the tweet has more than a 100 retweets as outcome.
 # Quickstart
 
 ```
