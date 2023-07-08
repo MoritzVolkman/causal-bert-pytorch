@@ -220,7 +220,7 @@ class CausalBertWrapper:
                     optimizer.step()
                     scheduler.step()
                     losses.append(loss.detach().cpu().item())
-                # print(np.mean(losses))
+                    # print(f'Loss = {losses}')
                     # if step > 5: continue
         return self.model
 
@@ -301,14 +301,13 @@ class CausalBertWrapper:
 
 if __name__ == '__main__':
     import pandas as pd
-
-    df = pd.read_csv('combined.csv', nrows=1000)
-    print(f'Successfully loaded {len(df)} tweets')
-    cb = CausalBertWrapper(batch_size=2,
-        g_weight=0.1, Q_weight=0.1, mlm_weight=1)
-    print(df.T)
+    df = pd.read_csv('combined.csv')
+    df = df.sample(5000)
+    cb = CausalBertWrapper(batch_size=100,
+                           g_weight=0.2, Q_weight=0.1, mlm_weight=1)
     cb.train(df['tweet'], df['confounder'], df['treatment'], df['retweet_count'], epochs=1)
-    print(f"Inference: {cb.inference(df['tweet'], df['confounder'])} \n")
+    df = df.sample(n=100, replace=True)
+    print(f'Successfully loaded {len(df)} tweets')
     print(f"ATE: {cb.ATE(df['confounder'], df['tweet'],  platt_scaling=False)} \n")
 
 

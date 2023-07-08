@@ -17,7 +17,7 @@ def extract_entries(input_file, output_file, num_entries):
                 entry.append(j)
                 if isinstance(tweet, str):
                     entry.append(tweet)
-                if retweet_count and int(float(retweet_count)) > 99:
+                if retweet_count and int(float(retweet_count)) > 1.855:
                     entry.append('1')
                 else:
                     entry.append('0')
