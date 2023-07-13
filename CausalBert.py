@@ -304,7 +304,7 @@ if __name__ == '__main__':
     df = pd.read_csv('combined.csv')
     df = df.sample(5000)
     cb = CausalBertWrapper(batch_size=100,
-                           g_weight=0.2, Q_weight=0.1, mlm_weight=1)
+                           g_weight=0.1, Q_weight=0.1, mlm_weight=1)
     cb.train(df['tweet'], df['confounder'], df['treatment'], df['retweet_count'], epochs=1)
     df = df.sample(n=100, replace=True)
     print(f'Successfully loaded {len(df)} tweets')
